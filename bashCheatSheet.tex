@@ -1,0 +1,303 @@
+\documentclass[a4paper,10pt,landscape]{report}
+
+\usepackage[dvipsnames]{xcolor}  % larger color palette
+\usepackage{multicol}            % number of columns in page
+\usepackage[
+   colorlinks=true,              % false: boxed links; true: colored links
+   linkcolor=blue,               % color of internal links (change box color with linkbordercolor)
+   urlcolor=blue]{hyperref}      % color of external links
+\usepackage[framemethod=TikZ,    % colored boxes
+   roundcorner=5pt,
+   innerleftmargin=0mm,
+   innerrightmargin=0mm
+   ]{mdframed}                   
+\usepackage[margin=10mm]{geometry}
+\usepackage{vwcol}               % framed text boxes
+\usepackage[normalem]{ulem}      % striking through text
+\usepackage[varl]{zi4}           % varl do distinguish l and 1, zi4 
+
+\newcommand{\boxtitle}[1]{{\textbf{\color{RubineRed}#1}}}
+\newcommand{\example}[1]{{\texttt{\color{RubineRed}#1}}}
+\newcommand{\labbr}[1]{{\texttt{\color{Red}#1}}} 
+\newcommand{\rabbr}[1]{{\color{Red}#1}}
+\newcommand{\co}[1]{\texttt{#1}} 
+\newcommand{\cob}[1]{\texttt{\textbf{#1}}} % New command, bold
+
+\global\mdfdefinestyle{mybox}{
+   backgroundcolor=CornflowerBlue!40,
+   linecolor=CornflowerBlue,
+   linewidth=1pt
+}
+\global\mdfdefinestyle{mybox2}{
+   backgroundcolor=GreenYellow!40,
+   linecolor=CornflowerBlue,
+   linewidth=1pt
+}
+\global\mdfdefinestyle{mybox3}{
+   backgroundcolor=Green!20,
+   linecolor=Green,
+   linewidth=1pt
+}
+\mdfsetup{skipabove=2mm, skipbelow=0mm}
+
+\pagenumbering{gobble} 
+\setlength{\tabcolsep}{3pt}
+\begin{document}
+
+% Header box
+%\begin{mdframed}[backgroundcolor=YellowOrange!30,roundcorner=5pt]
+\begin{center}
+{\huge{\textbf{Bash cheat sheet for regular users}}}
+\end{center}
+%\end{mdframed}
+
+\begin{multicols}{4}
+
+% Abbreviations
+\begin{mdframed}[style=mybox2]
+\begin{tabular}{ l l l l }
+\multicolumn{4}{l}{\boxtitle{Abbreviations}} \\
+\rabbr{f}                    & filename         & \rabbr{F}      & 2:nd filename \\
+\rabbr{d}                    & directory name   & \rabbr{D}      & 2:nd directory \\
+\rabbr{s}                    & string           & \rabbr{p}      & pattern \\
+\rabbr{c}                    & character        & \rabbr{\textbackslash{}n}    & newline \\
+\rabbr{\textbackslash{}t}    & tab              & \rabbr{\sout{MAC}}           & not on MAC \\
+\end{tabular}
+\end{mdframed}
+
+% Keyboard shortcuts
+\begin{mdframed}[style=mybox2]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Keyboard shortcuts}} \\
+\labbr{Ctrl-a}  &  go to beginning of line \\
+\labbr{Ctrl-e}  &  go to end of line \\
+\labbr{Ctrl-d}  &  remove character at cursor \\ 
+             &  or exit a shell \\
+\labbr{Ctrl-k}  &  remove text from cursor to the \\
+             &  end of line \\
+\labbr{Ctrl-u}  &  remove text from cursor to \\
+             &  the beginning of line \\ 
+\labbr{Ctrl-l}  &  clear the terminal \\
+\labbr{Ctrl-c}  &  exit a running program \\
+\labbr{Ctrl-r}  &  search command history \\
+\labbr{Alt-u}   &  make word UPPER case \rabbr{\sout{MAC}} \\
+\labbr{Alt-l}   &  make word lower case \rabbr{\sout{MAC}} \\
+\ldots{}      & \\
+\end{tabular}
+\begin{tabular}{ l }
+\labbr{tab completion:} {extend the current} \\
+{string to a file, command, program or} \\
+{variable. Like:} 
+\co{mk }\labbr{\textless{}tab\textgreater{}} \labbr{\textless{}tab\textgreater{}} \\
+\end{tabular}
+\end{mdframed}
+
+% Patterns, ranges, arithmetics and command substitution
+\begin{mdframed}[style=mybox2]
+\begin{tabular}{ l l l }
+\multicolumn{3}{l}{\boxtitle{Patterns, ranges, arithmetics and}} \\
+\multicolumn{3}{l}{\boxtitle{command substitution}} \\
+\labbr{*}        & any string     & \example{ls *.txt} \\
+\labbr{?}        & any character  & \example{ls ?.txt} \\
+\labbr{\{a,b,c\}}& a b or c       & \example{ls *.\{html,htm\}} \\
+\labbr{\{4..6\}} & 4 5 6          & \example{for i in \{4..6\}} \\
+\end{tabular}
+\begin{tabular}{ l l }
+\labbr{\$((expression))}   & \example{echo \$((3+4*2))} \\
+\labbr{\$(command)}        & \example{ls -l \$(which whoami)} \\
+\end{tabular}
+\end{mdframed}
+
+% Pipes
+\begin{mdframed}[style=mybox2]
+\begin{tabular}{ l }
+\multicolumn{1}{l}{\boxtitle{Pipes}} \\
+\example{echo -e "b\textbackslash{}na\textbackslash{}nb" | sort | uniq -c}
+\end{tabular}
+\end{mdframed}
+
+% Files and directories
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Files and directories}} \\
+\cob{ls}                   & list files \\
+\co{ls -l}                 & long listing (size, permission..) \\
+\co{ls -lh}                & list file sizes human readable \\
+\co{ls -1}                 & one filename per line \\
+\co{ls -a}                 & show hidden files \\
+\cob{cp} \labbr{f F}          & copy file \\
+\co{cp -r}                 & copy directory \\
+\co{cp -i}                 & ask before overwriting \\
+\cob{cd} \labbr{d}            & change directory \\
+\co{cd}                    & cd to home directory \\
+\co{cd \textasciitilde}    & cd to home directory \\
+\co{cd ..}                 & cd to parent directory \\
+\co{cd -}                  & cd to previous directory \\
+\cob{mv} \labbr{f F}          & rename \rabbr{f} to \rabbr{F} \\
+\co{mv} \labbr{f d}           & move file into directory \\
+\co{mv} {\labbr{d D}}         & rename or move \rabbr{d} to \rabbr{D} \\
+\co{mv -i}                 & ask before overwriting \\
+\cob{rm} \labbr{f}            & remove file \\
+\co{rm -r}                 & remove directory \\
+\co{rm -rf}                & force remove \rabbr{be careful$!$} \\
+\cob{mkdir} \labbr{d}         & make directory \\
+\cob{rmdir} \labbr{d}         & remove directory \\
+\cob{touch} \labbr{f}         & create empty file \\
+\cob{chmod} \co{+x}        & make file executable \\
+\end{tabular}
+\end{mdframed}
+
+% Paths
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Paths}}\\
+\cob{pwd}     & Current absolute path\\
+\cob{which}   & path to program/command\\
+\end{tabular}
+\end{mdframed}
+
+% Remote access
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Remote access}} \\
+\cob{ssh} user@host  & log in to remote host \\
+\co{ssh -p 22}       & use port number \\
+\co{ssh -x}          & use graphics \\
+\cob{scp} \labbr{f}     & secure copy\\
+\co{scp -P 22}       & use port number \\
+\co{scp -r}          & copy directory \\
+\end{tabular}
+\begin{tabular}{ l }
+\example{ssh user@130.235.244.18} \\
+\example{scp -r \textasciitilde/bin user@130.235.244.18:\textasciitilde} \\
+\end{tabular}
+\end{mdframed}
+
+% Search and replace
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Search and replace}} \\
+\cob{echo} \labbr{s}   & print string with \rabbr{\textbackslash{}n}\\
+\co{echo -n} \labbr{s} & print without \rabbr{\textbackslash{}n}\\
+\co{echo -e} \labbr{s} & \rabbr{\textbackslash{}n} newline,
+\labbr{\textbackslash{}t} tab\\
+\example{echo no | \cob{rev}}        & reverse, output: on \\
+\cob{grep} \labbr{p f}              & print lines containing \rabbr{p} \\
+\co{grep -i} \labbr{p f}            & ignore case in \rabbr{p} \\
+\co{grep -c} \labbr{p f}            & count lines containing \rabbr{p} \\
+\co{grep -v} \labbr{p f}            & print lines without \rabbr{p} \\
+\co{grep -m 4} \labbr{p f}          & print 4 lines containing \rabbr{p} \\
+\co{grep -A 3} \labbr{p f}          & print 3 lines starting \\
+                                 & with matching line \\
+\co{grep -B 2} \labbr{p f}          & like -A but lines before \\
+\co{grep -f} \labbr{f F}            & take patterns from file \rabbr{f} \\
+\cob{sed} \co{s/\labbr{p}/\labbr{s}/}  & replace first occurrence \\
+                                 & of \rabbr{p} on each line with \rabbr{s} \\
+\co{sed} \co{s/\labbr{p}/\labbr{s}/i}  & ignore case of \rabbr{p} \\
+\co{sed} \co{s/\labbr{p}/\labbr{s}/g}  & replace every occurrence \\
+\cob{tr} \co{ac tg}              & replace a with t, c with g\\
+\co{tr -d ac}                    & delete every a and c \\
+\end{tabular}
+\begin{tabular}{ l l }
+\cob{find} \labbr{d} \co{-name *.txt}    & find txt files in \rabbr{d} \\
+\end{tabular}
+\end{mdframed}
+
+% Status and history
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Status and history}} \\
+\cob{free}                & memory \rabbr{\sout{MAC}} \\
+\cob{who}                 & logged in users\\
+\cob{whoami}              & current user\\
+\cob{last}                & last logged in users\\
+\cob{top}                 & list processes, end: q \\
+\cob{history}             & retrieve command line history \\
+\cob{alias}               & see current aliases \\
+\cob{df} \co{-h}          & look at disk free space \\
+\cob{du} \co{-sh} \labbr{d}  & disk usage \\
+\cob{diff} \labbr{f F}       & compare files \\
+\end{tabular}
+\end{mdframed}
+
+% Status and history
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l }
+\multicolumn{1}{l}{\boxtitle{Loops}} \\
+\example{ls | \cob{while} read var; do \textbackslash{}} \\
+~~~~~~\example{cp -i \$var \$var.backup; done} \\
+\example{\cob{for} i in \$(ls); do \textbackslash{}} \\
+~~~~~~\example{cp -i \$var \$var.backup; done} \\
+\end{tabular}
+\end{mdframed}
+
+% File content
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{File content}} \\
+\cob{cat} \labbr{f}                 & print content \\
+\cob{more} \labbr{f}                & content pager \\
+\cob{less} \labbr{f}                & content pager, quit: q\\
+\cob{source} \labbr{f}              & read (config) file\\
+\cob{wc} \labbr{f}                  & count lines, words and \\
+                                 & bytes ($\approx$ characters) \\
+\co{wc -l}                       & count only lines\\
+\co{wc -m}                       & count only characters \\
+\cob{sort} \labbr{f}                & sort lines alphanumerically \\
+\co{sort -n} \labbr{f}              & sort lines numerically \\
+\co{sort -r} \labbr{f}              & sort lines reverse \\
+\cob{uniq} \labbr{f}                & remove adjacent identical \\
+                                 & lines, often use sort before \\
+\co{uniq} \co{-c} \labbr{f}         & count adjacent identical lines \\
+\cob{cut} \co{-f 1,3}            & print field 1 and 3 \\
+\co{cut} \co{-d} \labbr{c}          & use \rabbr{c} as delimiter, default \rabbr{\textbackslash{}t} \\
+\cob{paste} \labbr{f F}             & merge files line by line \\
+\end{tabular}
+\end{mdframed}
+
+% Compression and archiving
+\begin{mdframed}[style=mybox]
+\begin{tabular}{ l l }
+\multicolumn{2}{l}{\boxtitle{Compression and archiving}}\\
+\cob{gzip} \labbr{f}             & compress, remove \rabbr{f} \\
+\co{gzip} -c \labbr{f}           & gzip -c \rabbr{f}\textgreater{}\rabbr{f}.gz, keeps \rabbr{f} \\
+\cob{gunzip} \labbr{f}\co{.gz}   & uncompress, remove \rabbr{f}.gz \\
+\cob{bzip2} \labbr{f}            & compress, remove \rabbr{f} \\
+\co{bzip2} -c \labbr{f}          & bzip2 -c \rabbr{f}\textgreater{}\rabbr{f}.bz2, keeps \rabbr{f} \\
+\cob{bunzip2} \labbr{f}\co{.bz2} & uncompress, remove \rabbr{f}.bz2 \\
+\cob{zip} \labbr{f} \labbr{F}       & creates \rabbr{f}.zip \\
+\co{zip} -r \labbr{f} \labbr{d}     & zip directory to file \rabbr{f}.zip\\
+\cob{unzip} \labbr{f}.zip        & unzip \\
+\cob{tar}                     & archive \\
+\end{tabular}
+\begin{tabular}{ l }
+-z gzip -j bzip2 -v verbose, -f file (last) \\  
+\end{tabular}
+\begin{tabular}{ l l }
+\co{tar -cvzf \labbr{d}.tgz \labbr{d}} & -c create \\
+\co{tar -xvzf \labbr{d}.tgz}        & -x extract \\
+\co{tar -tf \labbr{d}.tgz}          & -t list files \\
+\end{tabular}
+\end{mdframed}
+
+% Help
+\begin{mdframed}[style=mybox3]
+\begin{tabular}{ l }
+\multicolumn{1}{l}{\boxtitle{Help}} \\
+\cob{man} \labbr{command} ~~~on-line reference manual \\
+\co{man ls, man tar, man man \ldots{}} \\
+\end{tabular}
+\end{mdframed}
+
+\end{multicols}
+
+\begin{center}
+{\small{
+\copyright{}Bj\"{o}rn Canb\"{a}ck 2017. This work is licensed under a
+\href{https://creativecommons.org/licenses/by-sa/4.0/}{Creative Commons
+   Attribution-ShareAlike 4.0 International License}. 
+Version 1.0.
+}}
+\end{center}
+
+\end{document}
